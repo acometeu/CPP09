@@ -6,7 +6,7 @@
 #    By: acomet <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/03 16:30:18 by acomet            #+#    #+#              #
-#    Updated: 2024/02/27 20:15:59 by acomet           ###   ########.fr        #
+#    Updated: 2024/03/28 20:02:11 by acomet           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		=	btc
 
 CC			=	c++
 
-CFLAGS		=	-Wall -Wextra -Werror -Wconversion -std=c++98 -std=gnu++11
+CFLAGS		=	-Wall -Wextra -Werror -std=c++98 -std=gnu++11
 
 BUILD		=	build
 

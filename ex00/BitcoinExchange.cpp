@@ -149,11 +149,12 @@ void    convert_bitcoin(std::map<std::string, float> &btc, const std::string &da
 
 int is_date_valid(const std::string &date)
 {
-    // is_parsing_date_valid()
     int year;
     int month;
     int day;
 
+    if (!is_parsing_date_valid(date))
+		return(0);
     try
     {
         year = std::stof(date.substr(0, 3));
@@ -162,12 +163,48 @@ int is_date_valid(const std::string &date)
     }
     catch(const std::exception& e)
     {
-        std::cerr << "Error : date invalid" << std::endl;
+		return(0);
     }
     if (day > 31)
-        std::cout << "Error : invalid date \"" << date << "\"" << std::endl;
+		return (0);
     if ((month == 2 || month == 4 || month == 6 || month == 9 || month == 11) && day > 30)
-        std::cout << "Error : invalid date \"" << date << "\"" << std::endl;
-
+		return(0);
+	if (month == 2 && (day > 29))
+		return(0);
+	if (month == 2 && day == 29 && ((year % 4) || (!year % 100 && year % 400)))
+		return(0);
     return(1);
+}
+
+int	is_parsing_date_valid(std::string date)
+{
+	int i = 0;
+
+	while (i < 4)
+	{
+		if (!isdigit(date[i]))
+			return(0);
+		i++;
+	}
+	if (date[i] != '-')
+		return(0);
+	i = 5;
+	while (i < 7)
+	{
+		if (!isdigit(date[i]))
+			return(0);
+		i++;
+	}
+	if (date[i] != '-')
+		return(0);
+	i = 8;
+	while (i < 10)
+	{
+		if (!isdigit(date[i]))
+			return(0);
+		i++;
+	}
+	if (date[i])
+		return(0);
+	return(1);
 }
