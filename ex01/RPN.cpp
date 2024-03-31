@@ -61,11 +61,16 @@ int inverted_polish_calcul(std::string param)
             number.pop();
             if (param[i] == '+')
                 result = number.top() + temp;
-            if (param[i] == '-')
+            else if (param[i] == '-')
                 result = number.top() - temp;
-            if (param[i] == '*')
+            else if (param[i] == '*')
                 result = number.top() * temp;
-            if (param[i] == '/')
+            else if (param[i] == '/' && temp == 0)
+            {
+                std::cout << "Cannot divide by 0" << std::endl;
+                return(1);
+            }
+            else if (param[i] == '/')
                 result = number.top() / temp;
             number.pop();
             number.push(result);
