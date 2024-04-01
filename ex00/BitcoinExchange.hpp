@@ -19,6 +19,7 @@
 #include <map>
 #include <fstream>
 #include <cctype>
+#include <cstdlib>
 
 
 /*  mains functions */
@@ -34,5 +35,6 @@ int verif_open_file(std::ifstream &src_file, const std::string filename);
 int is_date_and_value_valid(const std::string &date, const float &value, const std::string &buffer);
 int is_date_valid(const std::string &date);
 int	is_parsing_date_valid(std::string date);
+int is_value_zero(std::string temp, float &value);
 
 #endif

@@ -7,9 +7,11 @@
 #include <deque>
 #include <algorithm>
 #include <ctime>
+#include <cstdlib>
 
 /*  parsing */
 int     parsing_vector(char **argv);
+int     is_zero(std::string str);
 
 /*  display */
 void    display_arg(char **argv);

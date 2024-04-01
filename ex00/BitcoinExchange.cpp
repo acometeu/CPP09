@@ -2,7 +2,7 @@
 
 int verif_open_file(std::ifstream &src_file, const std::string filename)
 {
-    src_file.open(filename);
+    src_file.open(filename.c_str());
     if (!src_file.good())
     {
         std::cerr << "Error : while opening \"" << filename << "\" file" << std::endl;
@@ -57,7 +57,13 @@ int init_btc(std::map<std::string, float> &btc, std::string data)
                 src_file.close();
                 return(1);
             }
-            value = std::stof(buffer.substr(sep + 1, buffer.size() - 1));
+            value = std::strtof((buffer.substr(sep + 1, buffer.size() - 1)).c_str(), NULL);
+            if (value == 0 && !is_value_zero(buffer.substr(sep + 1, buffer.size() - 1), value))
+            {
+                std::cerr << "Error : \"" << buffer << "\" in data file is not a valid imput" << std::endl;
+                src_file.close();
+                return(1);
+            }
             if (value < 0)
             {
                 std::cout << "value in line \"" << buffer << "\" must be positive" << std::endl;
@@ -166,6 +172,7 @@ int evaluate_btc_value(std::map<std::string, float> &btc, char **argv)
     return(0);
 }
 
+
 int initialize_date_and_value(const std::string &buffer, size_t &sep, std::string &date, float &value)
 {
     std::string temp;
@@ -181,11 +188,16 @@ int initialize_date_and_value(const std::string &buffer, size_t &sep, std::strin
     }
     try
     {
-        value = std::stof(temp);
+        value = std::strtof(temp.c_str(), NULL);
+        if (value == 0 && !is_value_zero(temp, value))
+        {
+            std::cerr << "Error : no valid number in \"" << buffer << "\"" << std::endl;
+            return(1);
+        }
     }
     catch(const std::exception& e)
     {
-        std::cerr << "Error : no valid number in \"" << buffer << "\"" << std::endl;
+        std::cerr << e.what() << std::endl; 
         return(1);
     }
     return(0);
@@ -232,9 +244,9 @@ int is_date_valid(const std::string &date)
 		return(0);
     try
     {
-        year = std::stof(date.substr(0, 4));
-        month = std::stof(date.substr(5, 2));
-        day = std::stof(date.substr(8, 2));
+        year = std::strtof((date.substr(0, 4)).c_str(), NULL);
+        month = std::strtof((date.substr(5, 2)).c_str(), NULL);
+        day = std::strtof((date.substr(8, 2)).c_str(), NULL);
     }
     catch(const std::exception& e)
     {
@@ -273,4 +285,22 @@ int	is_parsing_date_valid(std::string date)
     if (date[i])
         return(0);
     return(1);
+}
+
+int is_value_zero(std::string temp, float &value)
+{
+    int i =0;
+
+    while (isspace(temp[i]))
+        i++;
+    if (temp[i] == '-')
+    {
+        value = 0;
+        i++;
+    }
+    else if (temp[i] == '+')
+        i++;
+    if (temp[i] == '0')
+        return(1);
+    return(0);
 }

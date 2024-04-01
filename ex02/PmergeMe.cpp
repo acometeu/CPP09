@@ -2,15 +2,12 @@
 
 int parsing_vector(char **argv)
 {
-    int i = 1;
-    int temp;
+    int         i = 1;
+    long int    temp;
     while (argv[i])
     {
-        try
-        {
-            temp = std::stoi(argv[i]);
-        }
-        catch(const std::exception& e)
+        temp = std::strtol(argv[i], NULL, 10);
+        if (temp == 0 && !is_zero(argv[i]))
         {
             std::cerr << "Error : \"" << argv[i] << "\" isn't a valid value" << std::endl;
             return(1);
@@ -20,8 +17,26 @@ int parsing_vector(char **argv)
             std::cerr << "Error : only positive mumber are accepted" << std::endl;
             return(1);
         }
+        if (temp > 2147483647)
+        {
+            std::cerr << "Error : \"" << argv[i] << "\" is greater than max_int" << std::endl;
+            return(1);
+        }
         i++;
     }
+    return(0);
+}
+
+int is_zero(std::string str)
+{
+    int i = 0;
+
+    while (isspace(str[i]))
+        i++;
+    if (str[i] == '-' || str[i] == '+')
+        i++;
+    if (str[i] == '0')
+        return(1);
     return(0);
 }
 
@@ -32,7 +47,7 @@ void    display_arg(char **argv)
     std::cout << "Before:  ";
     while (argv[i])
     {
-        std::cout << " " << std::stoi(argv[i]);
+        std::cout << " " << std::strtol(argv[i], NULL, 10);
         i++;
     }
     std::cout << std::endl;
@@ -95,7 +110,7 @@ int fill_vector(std::vector<int> &container, char **argv)
     {
         try
         {
-            container.push_back(std::stoi(argv[i]));
+            container.push_back(std::strtol(argv[i], NULL, 10));
         }
         catch(const std::exception& e)
         {
@@ -301,7 +316,7 @@ int fill_deque(std::deque<int> &container, char **argv)
     {
         try
         {
-            container.push_back(std::stoi(argv[i]));
+            container.push_back(std::strtol(argv[i], NULL, 10));
         }
         catch(const std::exception& e)
         {
